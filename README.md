@@ -3,7 +3,7 @@ A very basic HTTP server for quickly serving a directory similar to python's Sim
 page of index.html if it exists, otherwise a directory listing if the path is a directory or the appropriate file
 with root directory safety-checks.
 
-# Example
+# Examples
 
     $ http-server
     Serving /home/chris/html on :8080
