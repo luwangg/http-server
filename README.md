@@ -4,11 +4,9 @@ page of index.html if it exists, otherwise a directory listing if the path is a 
 with root directory safety-checks.
 
 # Example
-`
+
     $ http-server
     Serving /home/chris/html on :8080
-`
-`
+
     $ http-server :8081
     Serving /home/chris/html on :8081
-`
