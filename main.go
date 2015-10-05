@@ -63,8 +63,8 @@ func serveContent(resp http.ResponseWriter, req *http.Request) {
 	var uri string
 
 	// are we requesting a directory? check for index.html
-	if req.URL.Path == "/" {
-		uri = "/index.html"
+	if strings.HasSuffix(req.URL.Path, "/") {
+		uri = path.Clean(req.URL.Path) + "/index.html"
 	} else {
 		// clean out any ../ to keep root directory security
 		uri = path.Clean(req.URL.Path)
@@ -72,13 +72,13 @@ func serveContent(resp http.ResponseWriter, req *http.Request) {
 
 	// stat the file to make sure it exists
 	stat, err := os.Stat(path.Join(cwd, uri))
-	if err != nil && uri != "/index.html" {
+	if err != nil && !strings.HasSuffix(uri, "/index.html") {
 		// file doesn't exist and not a directory listing
 		resp.WriteHeader(404)
 		resp.Write([]byte(fmt.Sprintf("<html><h1><strong>404</strong></h1><h3>File Not Found</h3></html>")))
 		log.Println("[404]: file not found '", uri, "'")
 		return
-	} else if err == nil && uri == "/index.html" {
+	} else if err == nil && strings.HasSuffix(uri, "/index.html") {
 		// index.html exists, serve it up
 	} else if strings.HasSuffix(uri, "/index.html") || stat.IsDir() {
 		// index.html requested, but doesn't exist
